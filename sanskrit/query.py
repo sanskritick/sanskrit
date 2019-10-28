@@ -9,7 +9,7 @@
 """
 
 from collections import defaultdict
-
+import six
 from . import sounds
 from .generate import NominalGenerator
 from .schema import *
@@ -57,7 +57,7 @@ class SimpleQuery(object):
 
     def _simplify(self, forms):
         """Simplify the given forms by applying consonant reduction."""
-        for parse, name in forms.iteritems():
+        for parse, name in six.iteritems(forms):
             forms[parse] = sounds.Term(name).simplify()
 
     def noun(self, stem_name, gender):
@@ -66,12 +66,9 @@ class SimpleQuery(object):
         :param stem_name: the stem name
         :param gender: the noun gender
         """
-        stem = self._nominal_stem(stem_name, NounStem)
+        stem = self._nominal_stem(stem_name, NominalStem)
         if stem is None:
             return {}
-
-        print self.session.query(NounStem)\
-                          .filter(NounStem.name == stem_name).all()
 
         if stem.id in self.irregular_stems:
             gender_id = self.ctx.enum_id['gender'][gender]

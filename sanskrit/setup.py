@@ -4,6 +4,7 @@ sanskrit.setup
 
 Setup code for various Sanskrit data.
 """
+from __future__ import print_function
 
 import sys
 
@@ -171,8 +172,8 @@ def add_roots(ctx, prefix_map):
 
     # TODO: modified roots
     session = ctx.session
-    vclass = ENUM['vclass']
-    voice = ENUM['voice']
+    e_vclass = ENUM['vclass']
+    e_voice = ENUM['voice']
 
     root_map = {}  # (name, hom) -> id
 
@@ -199,7 +200,8 @@ def add_roots(ctx, prefix_map):
 
         assert (name, hom) in root_map
         root_id = root_map[(name, hom)]
-        paradigm = Paradigm(root_id=root_id, vclass_id=vclass, voice_id=voice)
+        paradigm = Paradigm(root_id=root_id, vclass_id=e_vclass[vclass],
+                            voice_id=e_voice[voice])
         session.add(paradigm)
 
     session.commit()
@@ -270,7 +272,7 @@ def add_verbs(ctx, root_map):
 
     session.commit()
     session.close()
-    print 'Skipped', len(skipped), 'roots.'
+    print('Skipped', len(skipped), 'roots.')
 
 
 def add_verbal_indeclinables(ctx, root_map):
@@ -338,7 +340,7 @@ def add_participle_stems(ctx, root_map):
 
     session.commit()
     session.close()
-    print 'Skipped', len(skipped), 'roots.'
+    print('Skipped', len(skipped), 'roots.')
 
 
 def add_nominal_endings(ctx):
@@ -540,7 +542,7 @@ def run(ctx):
     # add_irregular_nouns(ctx)
     # add_irregular_adjectives(ctx)
 
-    print 'Done.'
+    print('Done.')
 
 
 if __name__ == '__main__':
